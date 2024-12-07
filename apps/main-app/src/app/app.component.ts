@@ -1,13 +1,17 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { UserSearchComponent } from './resource/user-search.component';
 
 @Component({
-  imports: [NxWelcomeComponent, RouterModule],
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  imports: [RouterModule, MatTab, UserSearchComponent, MatTabGroup],
+  selector: 'df-root',
+  template: `
+    <mat-tab-group>
+      <mat-tab label="Resource"><df-user-search /></mat-tab>
+    </mat-tab-group>
+  `,
+  styles: ``,
 })
 export class AppComponent {
-  title = 'main-app';
 }

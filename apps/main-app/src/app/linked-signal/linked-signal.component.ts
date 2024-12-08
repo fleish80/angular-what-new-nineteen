@@ -42,9 +42,9 @@ export class LinkedSignalComponent {
       console.log('user', user,);
       return `${user.name} ${user.id}@email.com`;
     },
-    equal: (a: any, b: any) => {
+    equal: (a, b) => {
       console.log('a = ', a, ', ', 'b = ', b, ', ', 'a !== b => ', a !== b);
-      return a.id !== b.id;
+      return a !== b;
     },
   });
 

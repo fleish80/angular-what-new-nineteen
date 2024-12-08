@@ -1,7 +1,12 @@
-import { Component, resource, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  resource,
+  signal,
+} from '@angular/core';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { User } from './user.model';
-import { API_URL } from './config'
+import { API_URL } from './config';
 
 @Component({
   selector: 'df-user-search',
@@ -16,10 +21,9 @@ import { API_URL } from './config'
       />
     </fieldset>
     @if (users.isLoading()) {
-      <mat-progress-bar mode="query" />
-    }
-    @if (users.error()) {
-      <div class="error">{{ users.error() }}</div>
+    <mat-progress-bar mode="query" />
+    } @if (users.error()) {
+    <div class="error">{{ users.error() }}</div>
     }
     <section class="actions">
       <button (click)="users.reload()">Reload</button>
@@ -28,12 +32,13 @@ import { API_URL } from './config'
     </section>
     <ul>
       @for (user of users.value(); track user.id) {
-        <li>{{ user.name }}</li>
+      <li>{{ user.name }}</li>
       } @empty {
-        <li class="no-data">Nothing to show</li>
+      <li class="no-data">Nothing to show</li>
       }
     </ul>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserSearchComponent {
   query = signal('');

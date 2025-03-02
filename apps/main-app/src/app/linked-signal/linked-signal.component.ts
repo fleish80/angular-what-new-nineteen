@@ -1,71 +1,41 @@
-import { Component, linkedSignal, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatTab, MatTabGroup } from '@angular/material/tabs';
+import { LinkedSignalNoPropertiesComponent } from './linked-signal-no-properties.component';
+import { LinkedSignalWithPropertiesComponent } from './linked-signal-with-properties.component';
 
 @Component({
   selector: 'df-linked-signal',
-  imports: [CommonModule],
+  imports: [
+    MatTab,
+    MatTabGroup,
+    LinkedSignalNoPropertiesComponent,
+    LinkedSignalWithPropertiesComponent,
+  ],
   template: `
-    <input
-      (input)="setFirstName($event)"
-      placeholder="First Name"
-      value="John"
-    />
-    <p>{{ fullName() }}</p>
-
-
-    <input
-      type="number"
-      value="11"
-      #emailInput
-    />
-    <button (click)="changEmailId(emailInput.valueAsNumber)">Change Email Id</button>
-    <p>{{ email() }}</p>
+    <mat-tab-group>
+      <mat-tab label="No Properties">
+        <df-linked-signal-no-properties />
+      </mat-tab>
+      <mat-tab label="With Properties">
+        <df-linked-signal-with-properties
+        />
+      </mat-tab>
+    </mat-tab-group>
   `,
-  styles: ``,
+  styles: `
+    :host {
+      display: block;
+      margin-inline: 100px;
+      margin-block: 20px;
+      background-color: var(--mat-sys-inverse-primary);
+      --mdc-tab-indicator-active-indicator-color: var(--mat-sys-on-primary-fixed);
+      --mdc-tab-indicator-focus-indicator-color: var(--mat-sys-on-primary-fixed);
+      box-shadow: 0 0 10px 5px var(--mat-sys-on-primary-fixed);
+      border-radius: 21px;
+      padding-inline: 10px;
+    }
+
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LinkedSignalComponent {
-  firstName = signal<string>('John');
-  lastName = signal<string>('Doe');
-
-  fullName = linkedSignal({
-    source: this.firstName,
-    computation: (newVal, prevVal) => {
-      console.log('newVal = ', newVal, ', ', 'prevVal = ', prevVal);
-      return `${newVal} ${this.lastName()}`;
-    },
-  });
-
-  user = signal({ id: 11, name: 'Josh Dont' });
-  email = linkedSignal<{ id: number, name: string }, string>({
-    source: this.user,
-    computation: (user ) => {
-      console.log('user', user,);
-      return `${user.name} ${user.id}@email.com`;
-    },
-    equal: (a, b) => {
-      console.log('a = ', a, ', ', 'b = ', b, ', ', 'a !== b => ', a !== b);
-      return a !== b;
-    },
-  });
-
-  setFirstName($event: Event) {
-    this.firstName.set(($event.target as HTMLInputElement).value);
-  }
-
-  changEmailId(newID: number) {
-    this.user.update(u => ({ ...u, id: newID}));
-  }
-
-
-  constructor() {
-    console.log('------------------------------------------------------------------');
-    const shippingOptions = signal(['Ground', 'Air', 'Sea']);
-    const selectedOption = linkedSignal(() => shippingOptions()[0]);
-    console.log(selectedOption()); // 'Ground'
-    selectedOption.set(shippingOptions()[2]);
-    console.log(selectedOption()); // 'Sea'
-    shippingOptions.set(['Email', 'Will Call', 'Postal service']);
-    console.log(selectedOption()); // 'Email'
-    console.log('------------------------------------------------------------------');
-  }
-}
+export class LinkedSignalComponent {}

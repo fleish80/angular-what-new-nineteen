@@ -10,8 +10,9 @@ import { MatButton } from '@angular/material/button';
     <label for="shipping-select">Select Shipping Option:</label>
     <select
       id="shipping-select"
-      [ngModel]="selectedOption()"
-      (ngModelChange)="onSelectChange($event)"
+      #shippingSelect
+      [value]="selectedOption()"
+      (change)="onSelectChange(shippingSelect.value)"
     >
       @for (option of shippingOptions(); track option) {
       <option [value]="option">

@@ -1,25 +1,34 @@
 import { Component, linkedSignal, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'df-linked-signal-with-properties',
-  imports: [CommonModule],
+  imports: [CommonModule, MatButton],
   template: `
+    <label for="first-name">First Name:</label>
     <input
-      (input)="setFirstName($event)"
+      id="first-name"
+      #firstNameInput
+      (input)="setFirstName(firstNameInput.value)"
       placeholder="First Name"
-      value="John"
+      [value]="firstName()"
     />
+
+    <label for="last-name">First Name:</label>
+    <input
+      id="last-name"
+      #lastNameInput
+      (input)="setLastName(lastNameInput.value)"
+      placeholder="Last Name"
+      [value]="lastName()"
+    />
+
     <p>{{ fullName() }}</p>
 
-
-    <input
-      type="number"
-      value="11"
-      #emailInput
-    />
-    <button (click)="changEmailId(emailInput.valueAsNumber)">Change Email Id</button>
-    <p>{{ email() }}</p>
+    <button (click)="selCustomName('Custom', 'Name')" mat-flat-button>
+      Set Full Custom Name
+    </button>
   `,
   styles: ``,
 })
@@ -28,44 +37,29 @@ export class LinkedSignalWithPropertiesComponent {
   lastName = signal<string>('Doe');
 
   fullName = linkedSignal({
-    source: this.firstName,
+    source: () => ({
+      firstName: this.firstName(),
+      lastName: this.lastName(),
+    }),
     computation: (newVal, prevVal) => {
       console.log('newVal = ', newVal, ', ', 'prevVal = ', prevVal);
-      return `${newVal} ${this.lastName()}`;
-    },
-  });
-
-  user = signal({ id: 11, name: 'Josh Dont' });
-  email = linkedSignal<{ id: number, name: string }, string>({
-    source: this.user,
-    computation: (user ) => {
-      console.log('user', user,);
-      return `${user.name} ${user.id}@email.com`;
+      return `${newVal.firstName} ${newVal.lastName}`;
     },
     equal: (a, b) => {
       console.log('a = ', a, ', ', 'b = ', b, ', ', 'a !== b => ', a !== b);
-      return a !== b;
+      return a === b;
     },
   });
 
-  setFirstName($event: Event) {
-    this.firstName.set(($event.target as HTMLInputElement).value);
+  setFirstName(text: string) {
+    this.firstName.set(text);
   }
 
-  changEmailId(newID: number) {
-    this.user.update(u => ({ ...u, id: newID}));
+  setLastName(text: string) {
+    this.lastName.set(text);
   }
 
-
-  constructor() {
-    console.log('------------------------------------------------------------------');
-    const shippingOptions = signal(['Ground', 'Air', 'Sea']);
-    const selectedOption = linkedSignal(() => shippingOptions()[0]);
-    console.log(selectedOption()); // 'Ground'
-    selectedOption.set(shippingOptions()[2]);
-    console.log(selectedOption()); // 'Sea'
-    shippingOptions.set(['Email', 'Will Call', 'Postal service']);
-    console.log(selectedOption()); // 'Email'
-    console.log('------------------------------------------------------------------');
+  selCustomName(firstName: string, lastName: string) {
+    this.fullName.set(`${firstName} ${lastName}`);
   }
 }

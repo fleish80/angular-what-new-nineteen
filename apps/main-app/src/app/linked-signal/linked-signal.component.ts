@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatTab, MatTabGroup } from '@angular/material/tabs';
 import { LinkedSignalNoPropertiesComponent } from './linked-signal-no-properties.component';
 import { LinkedSignalWithPropertiesComponent } from './linked-signal-with-properties.component';
+import { SignalsOnlyComponent } from './signals-only.component';
+import { SignalsOnlyWithEffectComponent } from './signals-only-with-effect.component';
 
 @Component({
   selector: 'df-linked-signal',
@@ -10,15 +12,22 @@ import { LinkedSignalWithPropertiesComponent } from './linked-signal-with-proper
     MatTabGroup,
     LinkedSignalNoPropertiesComponent,
     LinkedSignalWithPropertiesComponent,
+    SignalsOnlyComponent,
+    SignalsOnlyWithEffectComponent,
   ],
   template: `
     <mat-tab-group>
       <mat-tab label="No Properties">
         <df-linked-signal-no-properties />
       </mat-tab>
+      <mat-tab label="Signals Only">
+        <df-signals-only />
+      </mat-tab>
+      <mat-tab label="Signals Only With Effect">
+        <df-signals-only-with-effect />
+      </mat-tab>
       <mat-tab label="With Properties">
-        <df-linked-signal-with-properties
-        />
+        <df-linked-signal-with-properties />
       </mat-tab>
     </mat-tab-group>
   `,

@@ -21,7 +21,9 @@ import { MatButton } from '@angular/material/button';
       }
     </select>
     <p>Selected option: {{ selectedOption() }}</p>
-    <button (click)="updateShippingOptions()" mat-flat-button>Update Options</button>
+    <button (click)="updateShippingOptions()" mat-flat-button>
+      Update Options
+    </button>
   `,
   styles: `
 
@@ -45,7 +47,7 @@ export class LinkedSignalNoPropertiesComponent {
   shippingOptions = signal(['Ground', 'Air', 'Sea']);
 
   // Linked signal that initially takes the first shipping option.
-   selectedOption = linkedSignal(() => this.shippingOptions()[0]);
+  selectedOption = linkedSignal(() => this.shippingOptions()[0]);
 
   // Linked signal with property
 
@@ -53,7 +55,6 @@ export class LinkedSignalNoPropertiesComponent {
   //   source: this.shippingOptions,
   //   computation: (shippingOptions) => shippingOptions[0],
   // });
-
 
   // Handler for when the user selects a different option.
   onSelectChange(shippingOption: string) {

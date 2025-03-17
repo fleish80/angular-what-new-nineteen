@@ -44,6 +44,8 @@ import { SignalsOnlyWithEffectComponent } from './signals-only-with-effect.compo
       padding-inline: 10px;
     }
 
+
+
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

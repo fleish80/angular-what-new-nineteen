@@ -30,7 +30,13 @@ import { MatButton } from '@angular/material/button';
       Set Full Custom Name
     </button>
   `,
-  styles: ``,
+  styles: `
+  :host {
+    padding:10px;
+    display: block;
+  }
+
+  `,
 })
 export class LinkedSignalWithPropertiesComponent {
   firstName = signal<string>('John');
